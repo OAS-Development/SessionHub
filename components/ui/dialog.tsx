@@ -34,3 +34,4 @@ export function DialogHeader({ children, className = '' }: { children: React.Rea
 export function DialogTitle({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return <h2 className={`text-lg font-semibold ${className}`}>{children}</h2>;
 }
+export const DialogTrigger = ({ children, onClick, className = "" }) => ( <button className={`${className}`} onClick={onClick}>{children}</button> ); export const DialogDescription = ({ children, className = "" }) => ( <p className={`text-sm text-gray-600 ${className}`}>{children}</p> );

@@ -1,18 +1,1 @@
-import React from 'react';
-
-interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  className?: string;
-}
-
-export function Select({ className = '', children, ...props }: SelectProps) {
-  return (
-    <select
-      className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
-      {...props}
-    >
-      {children}
-    </select>
-  );
-}
-
-export default Select;
+import * as React from "react"; export const Select = ({ className = "", children, ...props }) => ( <select className={`flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`} {...props}>{children}</select> ); export const SelectTrigger = ({ className = "", children }) => ( <div className={`flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ${className}`}>{children}</div> ); export const SelectValue = ({ placeholder = "", className = "" }) => ( <span className={`${className}`}>{placeholder}</span> ); export const SelectContent = ({ className = "", children }) => ( <div className={`bg-white border border-gray-200 rounded-md shadow-lg ${className}`}>{children}</div> ); export const SelectItem = ({ className = "", children, value, ...props }) => ( <option className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 ${className}`} value={value} {...props}>{children}</option> ); export default Select;
