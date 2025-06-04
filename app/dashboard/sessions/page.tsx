@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSessionManagement } from '@/lib/hooks/useSessionManagement'
 import { sessionTemplateManager } from '@/lib/session-templates'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 
 interface SessionTemplate {
   id: string
