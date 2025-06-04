@@ -52,8 +52,8 @@ export class CloudinaryManager {
   ): Promise<CloudinaryUploadResult> {
     try {
       const uploadOptions = {
-        folder: options.folder || 'development-hub',
-        tags: options.tags || ['development-hub'],
+        folder: options.folder || 'sessionhub',
+        tags: options.tags || ['sessionhub'],
         transformation: options.transformation,
         format: options.format || 'auto',
         quality: options.quality || 'auto:good',
@@ -127,7 +127,7 @@ export class CloudinaryManager {
     options: Partial<FileUploadOptions> = {}
   ): Promise<CloudinaryUploadResult> {
     return this.uploadOptimizedImage(file, {
-      folder: `development-hub/avatars`,
+      folder: `sessionhub/avatars`,
       tags: ['avatar', 'user', userId],
       width: 200,
       height: 200,
@@ -149,7 +149,7 @@ export class CloudinaryManager {
     options: Partial<FileUploadOptions> = {}
   ): Promise<CloudinaryUploadResult> {
     return this.uploadFile(file, {
-      folder: `development-hub/projects/${projectId}`,
+      folder: `sessionhub/projects/${projectId}`,
       tags: ['project', projectId, userId],
       quality: 'auto:good',
       ...options
@@ -164,7 +164,7 @@ export class CloudinaryManager {
     options: Partial<FileUploadOptions> = {}
   ): Promise<CloudinaryUploadResult> {
     return this.uploadOptimizedImage(file, {
-      folder: `development-hub/sessions/${sessionId}`,
+      folder: `sessionhub/sessions/${sessionId}`,
       tags: ['screenshot', 'session', sessionId, userId],
       quality: 'auto:good',
       format: 'auto',
@@ -313,8 +313,8 @@ export class CloudinaryManager {
     
     const params = {
       timestamp,
-      folder: options.folder || 'development-hub',
-      tags: options.tags ? options.tags.join(',') : 'development-hub',
+      folder: options.folder || 'sessionhub',
+      tags: options.tags ? options.tags.join(',') : 'sessionhub',
       eager: options.eager || 'c_fill,w_400,h_400,q_auto,f_auto',
       ...(options.transformation && { transformation: options.transformation })
     }

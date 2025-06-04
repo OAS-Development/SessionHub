@@ -2,7 +2,7 @@
 // Time: 90 minutes | Goal: Implement comprehensive Redis caching with 30%+ performance improvement
 
 /* SESSION 5 OVERVIEW:
-Build high-performance caching layer using Upstash Redis to optimize Development Hub 
+Build high-performance caching layer using Upstash Redis to optimize SessionHub 
 performance and enable real-time learning analytics with intelligent cache strategies.
 
 CURRENT STATUS:

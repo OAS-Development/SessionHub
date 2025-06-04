@@ -117,7 +117,7 @@ DATABASE_URL=postgresql://...
 
 ### Organization Structure
 ```
-development-hub/
+sessionhub/
 ├── avatars/              # User profile images (200x200, optimized)
 ├── projects/             # Project-specific files
 │   └── {projectId}/      # Organized by project

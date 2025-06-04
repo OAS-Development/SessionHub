@@ -224,7 +224,7 @@ export class FileUploadManager {
         })
       } else {
         result = await cloudinaryManager.uploadFile(file, {
-          folder: options.folder || `development-hub/users/${userId}`,
+          folder: options.folder || `sessionhub/users/${userId}`,
           tags: options.tags || ['user-upload', userId]
         })
       }

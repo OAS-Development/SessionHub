@@ -3,7 +3,7 @@
 
 /* SESSION 6 OVERVIEW:
 Build comprehensive file storage system using Cloudinary for image optimization,
-file management, and seamless integration with Development Hub learning system.
+file management, and seamless integration with SessionHub learning system.
 Leverage Session 5's Redis caching for CDN optimization.
 
 CURRENT STATUS:

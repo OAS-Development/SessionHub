@@ -336,7 +336,7 @@ export class PatternRecognitionEngine {
     }
   }
 
-  // Collect data from all Development Hub systems
+  // Collect data from all SessionHub systems
   private async collectSystemData(request: AnalysisRequest): Promise<PatternData[]> {
     const data: PatternData[] = []
     const { systems, timeRange, userId } = request

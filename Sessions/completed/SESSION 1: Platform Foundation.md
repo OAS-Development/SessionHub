@@ -2,7 +2,7 @@
 // Time: 45 minutes | Goal: Establish Clerk authentication and core app structure
 
 /* SESSION 1 OVERVIEW:
-Establish complete authentication system with Clerk and basic Development Hub structure.
+Establish complete authentication system with Clerk and basic SessionHub structure.
 Set foundation for all future sessions with secure authentication flow.
 
 COMPLETED DELIVERABLES:

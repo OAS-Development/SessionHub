@@ -111,7 +111,7 @@ export default function PatternDashboard({}: PatternDashboardProps) {
               Pattern Recognition Engine
             </h1>
             <p className="text-gray-600 mt-1">
-              AI-powered pattern analysis and predictive insights across all Development Hub systems
+              AI-powered pattern analysis and predictive insights across all SessionHub systems
             </p>
           </div>
 
