@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-06-03T16:42:15.370Z",
+  "users": [],
+  "projects": [],
+  "sessions": [],
+  "aiTools": [],
+  "aiTests": [],
+  "prompts": [],
+  "learnings": [
+    {
+      "id": "cmbftg8c9004qh6xy6869gqw6",
+      "insight": "Using TypeScript interfaces early saves debugging time later",
+      "category": "pattern",
+      "tags": [
+        "typescript",
+        "planning",
+        "debugging"
+      ],
+      "context": null,
+      "usefulness": 9,
+      "createdAt": "2025-06-03T01:04:34.617Z",
+      "updatedAt": "2025-06-03T01:04:34.617Z"
+    },
+    {
+      "id": "cmbftg8c9004rh6xy2psw8773",
+      "insight": "Claude Code works better with specific, detailed prompts",
+      "category": "discovery",
+      "tags": [
+        "ai-tools",
+        "prompting",
+        "claude-code"
+      ],
+      "context": null,
+      "usefulness": 8,
+      "createdAt": "2025-06-03T01:04:34.617Z",
+      "updatedAt": "2025-06-03T01:04:34.617Z"
+    },
+    {
+      "id": "cmbftg8c9004sh6xynib73jkx",
+      "insight": "Breaking large features into smaller tasks improves success rate",
+      "category": "improvement",
+      "tags": [
+        "project-management",
+        "task-planning"
+      ],
+      "context": null,
+      "usefulness": 9,
+      "createdAt": "2025-06-03T01:04:34.617Z",
+      "updatedAt": "2025-06-03T01:04:34.617Z"
+    },
+    {
+      "id": "cmbftg8c9004th6xy50bbfrha",
+      "insight": "Always test API endpoints immediately after creation",
+      "category": "success",
+      "tags": [
+        "api-development",
+        "testing",
+        "debugging"
+      ],
+      "context": null,
+      "usefulness": 7,
+      "createdAt": "2025-06-03T01:04:34.617Z",
+      "updatedAt": "2025-06-03T01:04:34.617Z"
+    },
+    {
+      "id": "cmbftg8c9004uh6xyst5j35zz",
+      "insight": "Generating component tests alongside components catches issues early",
+      "category": "pattern",
+      "tags": [
+        "testing",
+        "components",
+        "quality"
+      ],
+      "context": null,
+      "usefulness": 8,
+      "createdAt": "2025-06-03T01:04:34.617Z",
+      "updatedAt": "2025-06-03T01:04:34.617Z"
+    }
+  ]
+}

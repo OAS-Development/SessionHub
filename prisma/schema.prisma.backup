@@ -1,0 +1,333 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  username  String?  @unique
+  imageUrl  String?
+  timezone     String?
+  preferences  Json?
+  role         String?
+  experience   String?
+  primaryLanguage String?
+  aiToolsUsed  String[]
+  totalSessions        Int @default(0)
+  totalDevelopmentTime Int @default(0)
+  totalAIInteractions  Int @default(0)
+  isOnboardingComplete Boolean @default(false)
+  isActive             Boolean @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  lastActiveAt DateTime @default(now())
+  projects  Project[]
+  sessions  Session[]
+  aiTests   AITest[]
+  learnings Learning[]
+  prompts   Prompt[]
+  
+  @@map("users")
+  @@index([clerkId])
+  @@index([email])
+  @@index([isActive])
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  repositoryUrl String?
+  framework     String?
+  language      String?
+  techStack     String[]
+  status           ProjectStatus @default(ACTIVE)
+  currentVersion   String?
+  targetGoal       String? @db.Text
+  progressNotes    String? @db.Text
+  totalAIInteractions Int @default(0)
+  totalSessionTime    Int @default(0)
+  totalAITests        Int @default(0)
+  avgSessionDuration  Float?
+  totalLinesAdded     Int @default(0)
+  totalLinesDeleted   Int @default(0)
+  totalFilesModified  Int @default(0)
+  totalCommits        Int @default(0)
+  avgTestSuccessRate  Float?
+  avgAIToolRating     Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastSessionAt DateTime?
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions  Session[]
+  learnings Learning[]
+  
+  @@map("projects")
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  startTime        DateTime
+  endTime          DateTime?
+  plannedDuration  Int @default(60)
+  actualDuration   Int?
+  status           SessionStatus @default(ACTIVE)
+  sessionGoals     String? @db.Text
+  accomplishments  String? @db.Text
+  challenges       String? @db.Text
+  nextSteps        String? @db.Text
+  linesAdded       Int @default(0)
+  linesDeleted     Int @default(0)
+  filesModified    Int @default(0)
+  commits          Int @default(0)
+  aiToolsUsed      String[]
+  totalAIQueries   Int @default(0)
+  avgResponseTime  Float?
+  productivityScore Int?
+  satisfactionScore Int?
+  flowStateAchieved Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  aiTests   AITest[]
+  learnings Learning[]
+  
+  @@map("sessions")
+  @@index([userId])
+  @@index([projectId])
+  @@index([status])
+  @@index([startTime])
+}
+
+model AITool {
+  id          String @id @default(cuid())
+  name        String @unique
+  version     String?
+  category    AIToolCategory
+  description String?
+  strengths     String[]
+  weaknesses    String[]
+  costModel     String?
+  websiteUrl    String?
+  documentationUrl String?
+  avgRating         Float?
+  avgResponseTime   Float?
+  avgSuccessRate    Float?
+  totalTests        Int @default(0)
+  isActive          Boolean @default(true)
+  isPublic          Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  aiTests AITest[]
+  
+  @@map("ai_tools")
+  @@index([isActive])
+  @@index([category])
+}
+
+model Prompt {
+  id          String @id @default(cuid())
+  title       String
+  description String?
+  content     String @db.Text
+  category    PromptCategory
+  tags        String[]
+  difficulty  PromptDifficulty @default(INTERMEDIATE)
+  language    String?
+  framework   String?
+  useCase     String?
+  avgRating       Float?
+  avgSuccessRate  Float?
+  timesUsed       Int @default(0)
+  lastUsedAt      DateTime?
+  variables       Json?
+  expectedOutput  String? @db.Text
+  improvements    String? @db.Text
+  isPublic        Boolean @default(false)
+  isTemplate      Boolean @default(false)
+  isActive        Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aiTests   AITest[]
+  
+  @@map("prompts")
+  @@index([userId])
+  @@index([category])
+  @@index([isPublic])
+  @@index([isActive])
+}
+
+model AITest {
+  id       String @id @default(cuid())
+  name     String
+  testType    AITestType
+  category    String?
+  context     String? @db.Text
+  expectedResult String? @db.Text
+  actualResult   String? @db.Text
+  success        Boolean?
+  rating         Int?
+  confidence     Int?
+  responseTime   Int?
+  tokensUsed     Int?
+  cost           Float?
+  notes          String? @db.Text
+  improvements   String? @db.Text
+  followUpNeeded Boolean @default(false)
+  environment    String?
+  browserUsed    String?
+  osUsed         String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  aiToolId  String
+  aiTool    AITool   @relation(fields: [aiToolId], references: [id], onDelete: Cascade)
+  promptId  String?
+  prompt    Prompt?  @relation(fields: [promptId], references: [id], onDelete: SetNull)
+  learnings Learning[]
+  
+  @@map("ai_tests")
+  @@index([userId])
+  @@index([sessionId])
+  @@index([aiToolId])
+  @@index([testType])
+  @@index([createdAt])
+}
+
+model Learning {
+  id          String @id @default(cuid())
+  title       String
+  description String @db.Text
+  insight     String @db.Text
+  example     String? @db.Text
+  resources   String[]
+  category    LearningCategory
+  tags        String[]
+  importance  Int @default(3)
+  scenario    String? @db.Text
+  conditions  String[]
+  verified      Boolean @default(false)
+  timesApplied  Int @default(0)
+  effectiveness Float?
+  source      LearningSource
+  confidence  Int @default(3)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  verifiedAt DateTime?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  aiTestId  String?
+  aiTest    AITest?  @relation(fields: [aiTestId], references: [id], onDelete: SetNull)
+  
+  @@map("learnings")
+  @@index([userId])
+  @@index([category])
+  @@index([verified])
+  @@index([createdAt])
+}
+
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  ARCHIVED
+  ON_HOLD
+}
+
+enum SessionStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  INTERRUPTED
+}
+
+enum AIToolCategory {
+  CODE_COMPLETION
+  CHAT_ASSISTANT
+  CODE_GENERATION
+  DEBUGGING
+  REFACTORING
+  DOCUMENTATION
+  TESTING
+  MIXED
+}
+
+enum AITestType {
+  CODE_GENERATION
+  CODE_COMPLETION
+  DEBUGGING
+  REFACTORING
+  EXPLANATION
+  DOCUMENTATION
+  TESTING
+  OPTIMIZATION
+  ARCHITECTURE
+  REVIEW
+}
+
+enum PromptCategory {
+  CODE_GENERATION
+  DEBUGGING
+  REFACTORING
+  DOCUMENTATION
+  TESTING
+  ARCHITECTURE
+  EXPLANATION
+  OPTIMIZATION
+  GENERAL
+}
+
+enum PromptDifficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum LearningCategory {
+  PROMPT_ENGINEERING
+  BEST_PRACTICES
+  TOOL_USAGE
+  DEBUGGING_TECHNIQUES
+  CODE_PATTERNS
+  WORKFLOW_OPTIMIZATION
+  AI_LIMITATIONS
+  PERFORMANCE_TIPS
+  ARCHITECTURE_INSIGHTS
+  TESTING_STRATEGIES
+}
+
+enum LearningSource {
+  AI_TEST_RESULT
+  MANUAL_OBSERVATION
+  DOCUMENTATION
+  COMMUNITY
+  EXPERIMENTATION
+  ERROR_ANALYSIS
+} 

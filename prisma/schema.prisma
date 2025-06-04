@@ -1,0 +1,175 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  name      String?
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  projects  Project[]
+  sessions  Session[]
+  activity  Activity[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  type        String   @default("single-app") // single-app, platform, microservice
+  status      String   @default("planning") // planning, active, completed, paused, archived
+  repository  String?
+  deployUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Ownership
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relations
+  sessions    Session[]
+  activity    Activity[]
+
+  @@map("projects")
+}
+
+model Session {
+  id               String   @id @default(cuid())
+  sessionNumber    Int
+  title            String
+  description      String?
+  status           String   @default("planning") // planning, in-progress, completed, failed
+  startedAt        DateTime?
+  completedAt      DateTime?
+  duration         Int?     // in minutes
+  goalDescription  String?
+  actualOutcome    String?
+  notesLearned     String?
+  
+  // Code metrics
+  linesAdded       Int      @default(0)
+  linesModified    Int      @default(0)
+  linesDeleted     Int      @default(0)
+  filesCreated     Int      @default(0)
+  filesModified    Int      @default(0)
+  
+  // Quality metrics  
+  testsAdded       Int      @default(0)
+  bugsFound        Int      @default(0)
+  bugsFixed        Int      @default(0)
+  
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId        String
+  project          Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  tasks            Task[]
+  activity         Activity[]
+
+  @@map("sessions")
+}
+
+model Task {
+  id              String   @id @default(cuid())
+  title           String
+  description     String?
+  command         String
+  status          String   @default("draft") // draft, approved, running, completed, failed
+  expectedFiles   String?  // JSON array as string
+  actualFiles     String?  // JSON array as string
+  aiTool          String?  // claude-code, copilot, custom
+  output          String?
+  errors          String?
+  notes           String?
+  learned         String?
+  executionTime   Int?     // in milliseconds
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  sessionId       String
+  session         Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  activity        Activity[]
+
+  @@map("tasks")
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  type        String   // session_started, session_completed, task_completed, project_created, code_generated, etc.
+  description String
+  metadata    String?  // JSON string for additional data
+  timestamp   DateTime @default(now())
+
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sessionId   String?
+  session     Session? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  taskId      String?
+  task        Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("activity")
+}
+
+model Learning {
+  id          String   @id @default(cuid())
+  insight     String
+  category    String   // success, failure, improvement, pattern, discovery
+  tags        String[] // searchable tags
+  context     String?  // additional context about when this was learned
+  usefulness  Int      @default(5) // 1-10 scale of how useful this insight is
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("learnings")
+}
+
+model AIToolMetrics {
+  id           String   @id @default(cuid())
+  toolName     String   // claude-code, copilot, chatgpt, etc.
+  taskType     String   // component_creation, api_development, debugging, etc.
+  successRate  Float    @default(0) // 0-100
+  avgTime      Int      @default(0) // average time in milliseconds
+  totalUses    Int      @default(0)
+  errors       Int      @default(0)
+  date         DateTime @default(now())
+
+  // This helps track performance over time
+  @@unique([toolName, taskType, date])
+  @@map("ai_tool_metrics")
+}
+
+model ProductivityMetrics {
+  id                 String   @id @default(cuid())
+  date               DateTime @unique @default(now())
+  sessionsCompleted  Int      @default(0)
+  linesOfCode        Int      @default(0)
+  tasksCompleted     Int      @default(0)
+  projectsActive     Int      @default(0)
+  averageSessionTime Int      @default(0) // in minutes
+  successRate        Float    @default(0) // 0-100
+
+  @@map("productivity_metrics")
+}

@@ -1,0 +1,14 @@
+{
+  "backupFile": "/Users/jonathanhoggard/claude-development-hub/workspace/backups/prisma-backup-2025-06-03T16-42-15-368Z.json",
+  "timestamp": "2025-06-03T16:42:15.370Z",
+  "recordCounts": {
+    "users": 0,
+    "projects": 0,
+    "sessions": 0,
+    "aiTools": 0,
+    "aiTests": 0,
+    "prompts": 0,
+    "learnings": 5
+  },
+  "totalRecords": 5
+}

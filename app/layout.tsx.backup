@@ -1,0 +1,47 @@
+import React from 'react'
+import { ClerkProvider } from '@clerk/nextjs'
+import { Inter } from 'next/font/google'
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'AI Development Assistant Platform',
+  description: 'A comprehensive platform for testing, tracking, and learning from AI coding tools',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: undefined, // You can use 'dark' or 'light' or a custom theme
+        variables: {
+          colorPrimary: '#0F172A',
+          colorBackground: '#FFFFFF',
+          colorInputBackground: '#F8FAFC',
+          colorInputText: '#0F172A',
+        },
+        elements: {
+          formButtonPrimary: 
+            'bg-slate-900 hover:bg-slate-800 text-sm normal-case',
+          card: 'shadow-xl',
+          headerTitle: 'text-slate-900',
+          headerSubtitle: 'text-slate-600',
+        },
+      }}
+    >
+      <html lang="en">
+        <body className={inter.className}>
+          <div className="min-h-screen bg-gray-50">
+            {children}
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+} 
